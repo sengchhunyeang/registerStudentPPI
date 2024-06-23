@@ -64,8 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 }
 
-// SQL query to get data from Students table
-$sql = "SELECT student_id, student_name, gender, age, birth_date, current_address, phone_number, place_of_birth, skill, level, shift FROM Students";
+// SQL query to get data from Students table with join to get shift_name
+$sql = "SELECT s.student_id, s.student_name, s.gender, s.age, s.birth_date, s.current_address, s.phone_number, s.place_of_birth, s.skill, s.level, sh.shift_name, y.year_name
+        FROM Students s
+        INNER JOIN shifts sh ON s.shift_id = sh.shift_id
+        INNER JOIN years y ON s.year_id = y.year_id";
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -93,7 +96,8 @@ if (!$result) {
                         <th>ជំនាញ</th>
                         <th>កម្រិត</th>
                         <th>វេនសិក្សា</th>
-                        <th>សកម្មភាព</th> <!-- New column for delete button -->
+                        <th>ឆ្នាំសិក្សា</th>
+                        <th>សកម្មភាព</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -112,7 +116,8 @@ if (!$result) {
                                     <td>" . htmlspecialchars($row["place_of_birth"]) . "</td>
                                     <td>" . htmlspecialchars($row["skill"]) . "</td>
                                     <td>" . htmlspecialchars($row["level"]) . "</td>
-                                    <td>" . htmlspecialchars($row["shift"]) . "</td>
+                                    <td>" . htmlspecialchars($row["shift_name"]) . "</td>
+                                    <td>" . htmlspecialchars($row["year_name"]) . "</td>
                                     <td>
                                         <form method='post'>
                                             <input type='hidden' name='student_id' value='" . htmlspecialchars($row["student_id"]) . "'>
@@ -122,7 +127,7 @@ if (!$result) {
                                 </tr>";
 						}
 					} else {
-						echo "<tr><td colspan='11'>No results found</td></tr>";
+						echo "<tr><td colspan='12'>No results found</td></tr>";
 					}
 					?>
                     </tbody>
