@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Title</title>
+    <title>តារាងមើលឈ្មោះសិស្ស</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,8 +24,9 @@
     </style>
 </head>
 <body>
+
 <?php
-include 'navbar.php';
+include 'navbar.php'; // Include your navigation bar or menu
 ?>
 
 <?php
@@ -43,13 +44,14 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 }
 
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	// Check if delete button is clicked and if student ID is provided
-	if(isset($_POST['delete']) && isset($_POST['student_id'])) {
+	if (isset($_POST['delete']) && isset($_POST['student_id'])) {
 		$id = $conn->real_escape_string($_POST['student_id']);
 
 		// SQL query to delete the item
-		$sql = "DELETE FROM registerStudent WHERE student_id = '$id'";
+		$sql = "DELETE FROM Students WHERE student_id = '$id'";
 
 		if ($conn->query($sql) === TRUE) {
 			echo "Record deleted successfully";
@@ -62,8 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 }
 
-// SQL query to get data from registerStudent table
-$sql = "SELECT student_id, student_name, gender, age, birth_date, current_address, phone_number, place_birth, skill, level, shift FROM registerStudent";
+// SQL query to get data from Students table
+$sql = "SELECT student_id, student_name, gender, age, birth_date, current_address, phone_number, place_of_birth, skill, level, shift FROM Students";
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -71,10 +73,9 @@ if (!$result) {
 }
 ?>
 
-
 <div class="container-fluid">
     <div class="row">
-		<?php include 'sidebar.php'; ?>
+		<?php include 'sidebar.php'; // Include your sidebar or navigation ?>
         <div class="col-md">
             <h1 class="text-center mt-2">តារាងមើលឈ្មោះសិស្ស</h1>
             <div class="table-responsive">
@@ -108,7 +109,7 @@ if (!$result) {
                                     <td>" . htmlspecialchars($row["birth_date"]) . "</td>
                                     <td>" . htmlspecialchars($row["current_address"]) . "</td>
                                     <td>" . htmlspecialchars($row["phone_number"]) . "</td>
-                                    <td>" . htmlspecialchars($row["place_birth"]) . "</td>
+                                    <td>" . htmlspecialchars($row["place_of_birth"]) . "</td>
                                     <td>" . htmlspecialchars($row["skill"]) . "</td>
                                     <td>" . htmlspecialchars($row["level"]) . "</td>
                                     <td>" . htmlspecialchars($row["shift"]) . "</td>
@@ -116,7 +117,6 @@ if (!$result) {
                                         <form method='post'>
                                             <input type='hidden' name='student_id' value='" . htmlspecialchars($row["student_id"]) . "'>
                                             <button type='submit' class='btn btn-outline-danger btn-sm' name='delete' style='width: 100px;'>លុប</button>
-
                                         </form>
                                     </td>
                                 </tr>";
@@ -141,4 +141,12 @@ if (!$result) {
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZU
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+
+<?php
+// Close the database connection
+$conn->close();
+?>
